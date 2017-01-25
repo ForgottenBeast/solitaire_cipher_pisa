@@ -41,7 +41,8 @@ class Deck():
                 if(not numbers):
                     numbers = True
                     plain.extend([xval,xval,int(l)])
-                plain.append(int(l))
+                else:
+                    plain.append(int(l))
             else:
                 if(numbers):
                     plain.extend([xval,xval])

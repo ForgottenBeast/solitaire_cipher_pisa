@@ -14,8 +14,8 @@ def print_cipher(result):
     print ""
 
 mydeck = Deck('schneier pisa',(7,14))
-print "encrypting 'Bonjour'"
-output = mydeck.crypt('Bonjour')
+print "encrypting 'Bonjour monsieur 12'"
+output = mydeck.crypt('Bonjour monsieur 12')
 print_cipher(output)
 
 otherdeck = Deck('schneier pisa',(7,14))
