@@ -79,11 +79,27 @@ class Deck():
     def decrypt(self,message):
         letters = list(message)
         tmp = []
+        xval = Deck.encode('x')
+        numbers = False
+        cptx = 0
         for l in letters:
             crypted = Deck.encode(l)
             value = self.generate()
             plain = Deck.mod((crypted - value))
+
+            cptx = 0 if plain != xval else cptx + 1
+            numbers = numbers and plain < 9
+            
+
+            if(numbers):
+                tmp.append(str(plain))
+                continue
+
             tmp.append(Deck.decode(plain))
+
+            if(cptx == 3):#we have a number
+                numbers = True
+                cptx = 0
 
         plain = ''.join(tmp)
         return plain
@@ -109,8 +125,10 @@ class Deck():
 
         self.count_cut(self.deck[-1])
 
-        resultidx = self.deck[0]#read the top card giving the index of the
+        resultidx = self.deck[0] %54#read the top card giving the index of the
                                 #returned value
+
+        if(resultidx == 54):return self.deck[-1]
 
         return self.deck[resultidx]
 
