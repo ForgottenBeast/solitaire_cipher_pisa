@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*-coding:UTF-8 -*
-import sys
 import re
 
 class Deck():
@@ -28,7 +27,6 @@ class Deck():
     def crypt(self,message):
         num_pattern = re.compile('[0-9]')
         letters = list(message)
-        #letters.pop(-1)
 
         while(len(letters) % 5 != 0):#let's pad it
             letters.append('x')
@@ -44,7 +42,6 @@ class Deck():
                     numbers = True
                     plain.extend([xval,xval,int(l)])
                 plain.append(int(l))
-                print "added number:",plain
             else:
                 if(numbers):
                     plain.extend([xval,xval])
@@ -54,21 +51,41 @@ class Deck():
 
             for p in plain:
                 value = self.generate()
-                crypted = (p + value)%27
+                crypted = Deck.mod((p + value))
                 result.append(Deck.decode(crypted))
 
         while(len(result) % 5 != 0):
-            pad = (self.generate() + xval) % 27
-            result.append(pad)
+            pad = Deck.mod((self.generate() + xval)) 
+            result.append(Deck.decode(pad))
 
 
         output = ''.join(result)
-        cpt = 0
-        for r in result:
-            sys.stdout.write(r)
-            cpt+=1
-            if(cpt % 5 == 0):
-                print ' ',
+        return output
+
+    @staticmethod
+    def mod(val):
+        res = val
+        if(res > 26):
+            while res > 26:
+                res -= 26
+
+        elif(res < 0):
+            while(res < 0):
+                res += 26
+
+        return res
+
+    def decrypt(self,message):
+        letters = list(message)
+        tmp = []
+        for l in letters:
+            crypted = Deck.encode(l)
+            value = self.generate()
+            plain = Deck.mod((crypted - value))
+            tmp.append(Deck.decode(plain))
+
+        plain = ''.join(tmp)
+        return plain
 
     def generate(self,*args):
         """if called with a letter in argument it will do a setup routine, else
@@ -142,12 +159,13 @@ class Deck():
     @staticmethod
     def encode(letter):
         alphabet = list('abcdefghijklmnopqrstuvwxyz')
-        if(letter not in alphabet):
+        cur = letter.lower()
+        if(cur not in alphabet):
             return (alphabet.index('x') + 1)
         else:
-            return (alphabet.index(letter.lower())+1)
+            return (alphabet.index(cur)+1)
 
     @staticmethod
     def decode(number):
         alphabet = list('abcdefghijklmnopqrstuvwxyz')
-        return alphabet[number]
+        return alphabet[number-1]
