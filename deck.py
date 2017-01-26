@@ -19,7 +19,6 @@ class Deck():
         self.private_key = private_key
 
         password_letters = list(password)
-        password_letters.pop(-1)#get rid of the newline at end of password
 
         for l in password_letters:
             self.generate(l)
