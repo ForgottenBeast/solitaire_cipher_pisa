@@ -124,11 +124,14 @@ class Deck():
 
         self.count_cut(self.deck[-1])
 
-        resultidx = self.deck[0] %54#read the top card giving the index of the
+        resultidx = self.deck[0]#read the top card giving the index of the
                                 #returned value
 
-        if(resultidx == 54):return self.deck[-1]
+        if(resultidx == 54):
+            #print "generated:",self.deck[-1]
+            return self.deck[-1]
 
+        #print "generated:",self.deck[resultidx]
         return self.deck[resultidx]
 
 
@@ -166,7 +169,7 @@ class Deck():
         self.deck = below + self.deck
 
     def count_cut(self,value):
-        if(value == 54):#it's a joker so don't move
+        if(value == 54 or value == 53):#it's a joker so don't move
             return
 
         tocut = self.deck[:value]
